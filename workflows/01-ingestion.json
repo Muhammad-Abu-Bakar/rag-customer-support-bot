@@ -14,47 +14,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "61927b02-1b66-40f0-aede-4d0bda1b2f7a",
-              "name": "target_url",
-              "value": "https://docs.stripe.com/webhooks",
-              "type": "string"
-            },
-            {
-              "id": "884f7a9b-8042-426b-839d-6b6d101f09d3",
-              "name": "source_title",
-              "value": "Stripe — Webhooks Overview",
-              "type": "string"
-            },
-            {
-              "id": "83931848-67c3-46ac-b1ed-ba77fc85e305",
-              "name": "doc_type",
-              "value": "tutorial",
-              "type": "string"
-            },
-            {
-              "id": "88c63030-485f-4793-b4cd-646f336d9dcb",
-              "name": "namespace",
-              "value": "stripe-webhooks-v1",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        208,
-        0
-      ],
-      "id": "2e638b19-7c1b-455e-a1cd-cc29c3b9bad5",
-      "name": "Define Source"
-    },
-    {
-      "parameters": {
         "url": "=https://r.jina.ai/{{ $json.target_url }}",
         "options": {}
       },
@@ -77,7 +36,7 @@
           "cachedResultName": "saas-docs"
         },
         "options": {
-          "pineconeNamespace": "=={{ $('Define Source').item.json.namespace }}"
+          "pineconeNamespace": "={{ $('Define Source').item.json.namespace }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
@@ -117,26 +76,26 @@
     {
       "parameters": {
         "jsonMode": "expressionData",
-        "jsonData": "=={{ $json.data }}",
+        "jsonData": "={{ $json.data }}",
         "textSplittingMode": "custom",
         "options": {
           "metadata": {
             "metadataValues": [
               {
                 "name": "=source_title",
-                "value": "=={{ $('Define Source').item.json.source_title }}"
+                "value": "={{ $('Define Source').item.json.source_title }}"
               },
               {
                 "name": "=source_url",
-                "value": "=={{ $('Define Source').item.json.target_url }}"
+                "value": "={{ $('Define Source').item.json.target_url }}"
               },
               {
                 "name": "doc_type",
-                "value": "=={{ $('Define Source').item.json.doc_type }}"
+                "value": "={{ $('Define Source').item.json.doc_type }}"
               },
               {
                 "name": "ingested_at",
-                "value": "=={{ $now.toISO() }}"
+                "value": "={{ $now.toISO() }}"
               }
             ]
           }
@@ -165,6 +124,19 @@
       ],
       "id": "a1e054fd-22c3-4b83-ae42-2d24a2ad1c26",
       "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "jsCode": "const sources = [\n  {\n    target_url: \"https://docs.stripe.com/webhooks\",\n    source_title: \"Stripe — Webhooks Overview\",\n    doc_type: \"overview\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/webhooks/quickstart\",\n    source_title: \"Stripe — Webhook Builder (Quickstart)\",\n    doc_type: \"tutorial\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/webhooks/handling-payment-events\",\n    source_title: \"Stripe — Handling Payment Events\",\n    doc_type: \"tutorial\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/webhooks/versioning\",\n    source_title: \"Stripe — Webhook Versioning\",\n    doc_type: \"tutorial\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/webhooks/signature\",\n    source_title: \"Stripe — Resolve Signature Verification Errors\",\n    doc_type: \"troubleshooting\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/webhooks/process-undelivered-events\",\n    source_title: \"Stripe — Process Undelivered Events\",\n    doc_type: \"tutorial\"\n  },\n  {\n    target_url: \"https://docs.stripe.com/event-destinations\",\n    source_title: \"Stripe — Event Destinations Overview\",\n    doc_type: \"overview\"\n  },\n];\n\nreturn sources.map(s => ({\n  json: { ...s, namespace: \"stripe-webhooks-v1\" }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "608d5957-286e-48f8-b943-55f00da34f5f",
+      "name": "Define Source"
     }
   ],
   "pinData": {},
@@ -174,17 +146,6 @@
         [
           {
             "node": "Define Source",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Define Source": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -234,6 +195,17 @@
           }
         ]
       ]
+    },
+    "Define Source": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -241,7 +213,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "bcecb8dc-f51e-40d5-a05b-3cd20341810c",
+  "versionId": "92f972af-dca1-4a60-a308-d33a74fae533",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d708e720e2d63357e503df5ae8faaf56bfbd754e916ca3fff6f276d18578eeb3"
