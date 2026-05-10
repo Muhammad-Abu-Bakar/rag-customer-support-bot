@@ -1,3 +1,4 @@
+<img width="1699" height="901" alt="Screenshot 2026-05-11 at 01 29 27" src="https://github.com/user-attachments/assets/afeac570-f4bb-43fe-9fc9-2f7508126e65" />
 # Setup
 
 ## Required accounts
