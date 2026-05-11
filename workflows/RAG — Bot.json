@@ -1,0 +1,217 @@
+{
+  "name": "RAG — Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c2791a2-fee4-41d2-bc94-965e832cd289",
+      "name": "Telegram Trigger",
+      "webhookId": "967ce8d7-c385-4d69-b16e-becefb0fc063",
+      "credentials": {
+        "telegramApi": {
+          "id": "rpzhuYlzILtMc6sF",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful customer support bot for Stripe webhooks documentation. You help developers integrating Stripe webhooks with technical questions about signature verification, event handling, retries, versioning, and related topics.\n\n## How to respond\n\n1. **Always search first.** For every user question, call the `stripe_webhooks_search` tool to retrieve relevant chunks from the official Stripe webhook docs. Even if you think you know the answer, search to confirm and to surface sources to cite.\n\n2. **Ground your answer in retrieved chunks only.** Do not invent details, parameter names, or version numbers. If the retrieved chunks don't fully answer the question, say so honestly.\n\n3. **Keep it concise.** Aim for 2-4 sentences plus a short code snippet only when directly relevant. Developers want quick answers, not essays.\n\n4. **Always cite your sources.** End every response with a \"Sources\" section listing the docs you drew from.\n\n## Citation format\n\nAfter your answer, add a blank line, then this exact format:\n\n*Sources:*\n- [Source title](source URL)\n- [Source title](source URL)\n\nUse the `source_title` and `source_url` fields from the metadata of the chunks you retrieved. List each unique source only once, even if multiple chunks came from the same doc. Use single asterisks for bold (Telegram Markdown).\n\n## Fallback for out-of-scope questions\n\nIf the retrieved chunks don't contain enough information, or the question is unrelated to Stripe webhooks, respond:\n\n\"I don't have enough information in the Stripe webhooks knowledge base to answer that confidently. For the most complete information, please check https://docs.stripe.com/webhooks.\"\n\nDon't fabricate or guess. Don't list sources if you couldn't find any.",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f8bd8c8a-4d64-4e5a-9ed9-27fa03f30457",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "e21b54c4-f0ec-4460-b5ec-0bf11ee98053",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "JAMyVUY35WgaQUSm",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "=Search Stripe webhooks documentation for relevant information. Use this for any question about Stripe webhooks, signature verification, event handling, retries, versioning, or related topics.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "saas-docs",
+          "mode": "list",
+          "cachedResultName": "saas-docs"
+        },
+        "options": {
+          "pineconeNamespace": "=stripe-webhooks-v1"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        304
+      ],
+      "id": "ea2b665a-9ad6-4a71-9e70-fb60753e2d0f",
+      "name": "stripe_webhooks_search",
+      "credentials": {
+        "pineconeApi": {
+          "id": "NdtrPImLEL6WrcAH",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        512
+      ],
+      "id": "0a0a3d02-bf13-4c53-aa46-8319f87b6051",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "JAMyVUY35WgaQUSm",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "06a90ab6-be53-4015-bd1a-c02fb00cfe07",
+      "name": "Send a text message",
+      "webhookId": "cab43c47-c9c2-4fdf-85bf-6b16c4dd73fb",
+      "credentials": {
+        "telegramApi": {
+          "id": "rpzhuYlzILtMc6sF",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "stripe_webhooks_search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "stripe_webhooks_search",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "dff27d36-d12a-4a77-ad35-41f6556a635e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d708e720e2d63357e503df5ae8faaf56bfbd754e916ca3fff6f276d18578eeb3"
+  },
+  "id": "c7TjnbgbtiZaOSm3",
+  "tags": []
+}
