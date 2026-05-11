@@ -8,7 +8,9 @@ documentation, with citations back to source. Built end-to-end in n8n.
 Telegram Bot API
 
 ## Status
-🚧 In development — see `docs/ARCHITECTURE.md` for the build plan.
+## Status
+   ✓ Ingestion working (171 chunks across 7 Stripe webhook docs)
+   ✓ Bot live on Telegram — try [@abubakar_rag_bot](https://t.me/abubakar_rag_bot)
 
 ## Demo
 _(Coming in Step 7 — 30-second video + live bot link)_
