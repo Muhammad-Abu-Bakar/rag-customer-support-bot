@@ -6,7 +6,7 @@
 > demo is offline. Screenshots below show the bot in operation. The Python
 > implementation in `python/` runs locally with no hosting dependency.
 
-![Demo](./screenshots/hero-telegram-demo.png)
+![The Python/LangChain CLI answering with citations, and refusing an out-of-corpus question](./screenshots/python-cli-demo.jpeg)
 
 ---
 
