@@ -2,9 +2,23 @@
 
 > Retrieval-augmented Telegram bot that answers questions about Stripe webhooks documentation in real time, with citations back to source.
 
-> **Note:** The hosted n8n instance is no longer running, so the live Telegram
-> demo is offline. Screenshots below show the bot in operation. The Python
-> implementation in `python/` runs locally with no hosting dependency.
+**Live demo:** https://rag-customer-support-bot.onrender.com/docs
+
+Try it from the browser — open `/docs`, expand `POST /ask`, click "Try it out",
+and send a question about Stripe webhooks.
+
+```bash
+curl -X POST https://rag-customer-support-bot.onrender.com/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "how do I verify a webhook signature?"}'
+```
+
+> Hosted on a free tier that sleeps when idle — the first request after a quiet
+> period takes ~50s to wake, then responds normally.
+>
+> The original n8n version ran on a paid hosted instance that has since been
+> retired, so the Telegram demo is offline. Screenshots below show it in
+> operation.
 
 ![The Python/LangChain CLI answering with citations, and refusing an out-of-corpus question](./screenshots/python-cli-demo.jpeg)
 
