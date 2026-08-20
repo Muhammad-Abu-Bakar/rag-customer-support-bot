@@ -25,9 +25,9 @@ retrieval strategy. See [`python/README.md`](python/README.md) for setup.
 
 ## Why this project?
 
-Most AI Automation Engineer / n8n Developer job listings ask for **RAG, vector databases, and AI agents** — but few public n8n projects demonstrate all three end-to-end. This bot ingests Stripe's webhook docs into a vector database, then uses a Telegram-hosted AI agent to answer developer questions with citations linking back to the source pages.
+Teams with good documentation still field the same questions over and over, and generic AI chatbots make the problem worse by answering confidently from training data rather than from the docs. This bot only answers from ingested documentation, cites the exact pages it used, and says so when the answer isn't there.
 
-Built in a weekend. Live for anyone to test.
+Built as a reference implementation on Stripe's webhook docs — the same pipeline works on any documentation set.
 
 ## What it does
 
@@ -54,7 +54,7 @@ graph TB
         I4 --> P[(Pinecone<br/>saas-docs index)]
     end
 
-    subgraph Bot["Bot · active 24/7"]
+    subgraph Bot["Bot"]
         U[User on Telegram] --> T[Telegram Trigger]
         T --> A[AI Agent · gpt-4o-mini]
         A <-->|retrieve top-4| P
@@ -74,7 +74,7 @@ graph TB
 | Doc fetcher | **Jina Reader** | Free, converts any URL to clean markdown |
 | Bot interface | **Telegram Bot API** | 5-minute setup, native n8n trigger |
 
-Hosted on **n8n Cloud**. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for full decision rationale.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for full decision rationale.
 
 ## Numbers
 
@@ -82,7 +82,7 @@ Hosted on **n8n Cloud**. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for 
 - **171 chunks** in Pinecone, ~24 chunks per doc
 - **5–10s** average response time (message → reply)
 - **~405 tokens** per AI Agent invocation (cost: ~$0.0002 per question)
-- **Free tier all the way** — Pinecone Starter, Telegram, n8n Cloud Starter
+- **Runs on free tiers** — Pinecone Starter, Telegram, OpenAI pay-as-you-go
 
 ## Lessons learned
 
@@ -131,7 +131,7 @@ Things I'd add for v2:
 
 ## Author
 
-Built by **Muhammad Abubakar** — n8n / AI Automation Engineer based in Lahore.
+Built by **Muhammad Abubakar** — AI Automation Engineer based in Lahore.
 
 - GitHub: [@Muhammad-Abu-Bakar](https://github.com/Muhammad-Abu-Bakar)
 - Live Telegram demo: offline (hosted n8n instance retired). See screenshots above.
