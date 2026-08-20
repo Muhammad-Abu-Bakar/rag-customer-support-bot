@@ -10,7 +10,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 _ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv(_ENV_PATH)
+# Local development reads .env; in deployment the environment is already populated.
+load_dotenv(_ENV_PATH, override=False)
 
 
 class ConfigError(RuntimeError):

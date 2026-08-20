@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: rag-support-bot
+    runtime: python
+    rootDir: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && pip install -e .
+    startCommand: uvicorn rag_bot.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PINECONE_INDEX_NAME
+        value: saas-docs
+      - key: PINECONE_NAMESPACE
+        value: stripe-webhooks-v1
+      - key: EMBEDDING_MODEL
+        value: text-embedding-3-small
+      - key: CHAT_MODEL
+        value: gpt-4o-mini
+      - key: TOP_K
+        value: "4"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
