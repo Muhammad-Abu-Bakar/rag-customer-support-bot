@@ -2,7 +2,9 @@
 
 > Retrieval-augmented Telegram bot that answers questions about Stripe webhooks documentation in real time, with citations back to source.
 
-**[👉 Try the live bot on Telegram](https://t.me/abubakar_rag_bot)**
+> **Note:** The hosted n8n instance is no longer running, so the live Telegram
+> demo is offline. Screenshots below show the bot in operation. The Python
+> implementation in `python/` runs locally with no hosting dependency.
 
 ![Demo](./screenshots/hero-telegram-demo.png)
 
@@ -119,7 +121,7 @@ Things I'd add for v2:
 Built by **Muhammad Abubakar** — n8n / AI Automation Engineer based in Lahore.
 
 - GitHub: [@Muhammad-Abu-Bakar](https://github.com/Muhammad-Abu-Bakar)
-- Try the live bot: [@abubakar_rag_bot on Telegram](https://t.me/abubakar_rag_bot)
+- Live Telegram demo: offline (hosted n8n instance retired). See screenshots above.
 - Other projects: [ASO Analyzer](https://github.com/Muhammad-Abu-Bakar/aso-analyzer)
 
 ---
