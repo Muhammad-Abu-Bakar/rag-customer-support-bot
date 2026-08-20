@@ -10,6 +10,19 @@
 
 ---
 
+## Two implementations
+
+The same RAG system, built two ways:
+
+- **n8n** (repo root) — visual workflow, fast to iterate, easy to debug on canvas.
+  Requires a hosted n8n instance (recurring cost).
+- **Python + LangChain 1.x** (`python/`) — version-controlled logic, testable,
+  deployable as a service. Runs locally with no hosting dependency.
+
+Both share one Pinecone index (`saas-docs`, 171 chunks, 1536-dim) and the same
+retrieval strategy. See [`python/README.md`](python/README.md) for setup.
+
+
 ## Why this project?
 
 Most AI Automation Engineer / n8n Developer job listings ask for **RAG, vector databases, and AI agents** — but few public n8n projects demonstrate all three end-to-end. This bot ingests Stripe's webhook docs into a vector database, then uses a Telegram-hosted AI agent to answer developer questions with citations linking back to the source pages.
