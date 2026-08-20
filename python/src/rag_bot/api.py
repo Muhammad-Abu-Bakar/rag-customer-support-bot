@@ -42,6 +42,19 @@ class AskResponse(BaseModel):
     elapsed_seconds: float
 
 
+@app.get("/")
+def root() -> dict:
+    """Landing route so the bare URL is useful rather than a 404."""
+    return {
+        "service": "RAG Support Bot",
+        "description": "Answers questions from Stripe's webhooks documentation, with citations.",
+        "docs": "/docs",
+        "health": "/health",
+        "ask": "POST /ask with {\"question\": \"...\"}",
+        "note": "Hosted on a free tier; the first request after idle may take ~50s to wake.",
+    }
+
+
 @app.get("/health")
 def health() -> dict:
     """Liveness check. Confirms config loads without calling any external API."""
